@@ -8,7 +8,7 @@
 using namespace std;
 
 vector<But*> * But::instances;
-
+//salut
 But::But (string s, int a){
     nom=s;
     age=a;
