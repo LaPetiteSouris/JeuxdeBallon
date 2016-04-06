@@ -1,9 +1,9 @@
 
 #include <iostream>
 #include <string>
-#include "joueur.h"
-#include "ballon.h"
-#include "but.h"
+#include "../include/joueur.h"
+#include "../include/ballon.h"
+#include "../include/but.h"
 
   void affiche_menu();
   void affiche_ballon();

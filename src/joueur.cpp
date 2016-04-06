@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "ballon.h"
-#include "joueur.h"
+#include "../include/ballon.h"
+#include "../include/joueur.h"
 
 
 using namespace std;

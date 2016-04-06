@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string.h>
-#include "ballon.h"
-#include "but.h"
-#include "joueur.h"
+#include "../include/ballon.h"
+#include "../include/but.h"
+#include "../include/joueur.h"
 
 
 using namespace std;
