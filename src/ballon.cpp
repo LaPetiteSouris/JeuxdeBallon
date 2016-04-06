@@ -1,11 +1,7 @@
 // TUNG
 
 
-#include <iostream>
-#include <string.h>
 #include "../include/ballon.h"
-
-
 
 
 Ballon::Ballon(string str, int taille_) {
@@ -16,12 +12,7 @@ Ballon::Ballon(string str, int taille_) {
 }
 
 Ballon::~Ballon() {
-    for (vector<Ballon *>::iterator b = instances->begin(); b != instances->end(); b++) {
-        if (this == *b) {
-            instances->erase(b);
-            break;
-        }
-    }
+    instances->erase(std::remove(instances->begin(), instances->end(), this), instances->end());
 }
 
 void Ballon::lireIdentificateur(string &in) {
@@ -51,7 +42,7 @@ Ballon *Ballon::creer_une_instance() {
 }
 
 void Ballon::imprimer_instances() {
-    for (vector<Ballon *>::iterator i = instances->begin(); i != instances->end(); i++) {
+    for (vector<Ballon *>::iterator i = instances->begin(); i < instances->end(); ++i) {
         (*i)->imprimer();
     }
 }
