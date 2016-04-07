@@ -29,7 +29,7 @@ void But::lireAge(int &age) {
 
 void But::imprimer() {
     string str;
-    this->toString(str);
+    toString(str);
     cout << str << endl;
 }
 
@@ -49,9 +49,9 @@ void But::imprimer_instances() {
     }
 }
 
-But *But::getInstance(string s) {
+But *But::getInstance(string str) {
     for (vector<But *>::iterator i = instances->begin(); i != instances->end(); i++) {
-        if ((*i)->nom == s) {
+        if ((*i)->nom == str) {
             return *i;
         }
     }
@@ -64,48 +64,44 @@ bool But::detruire_une_instance() {
     But::lireNom(str);
     But *but = But::getInstance(str);
     // There is no harm of deleting something that does not exist
-    delete(but);
+    delete (but);
     return true;
 
 }
 
 void But::associer_ballon_instance() {
-    string s1;
-    But::lireNom(s1);
-    But *b = But::getInstance(s1);
-    string s2;
-    Ballon::lireIdentificateur(s2);
-    Ballon *n = Ballon::getInstance(s2);
+    string nom_;
+    But::lireNom(nom_);
+    But *pBut = But::getInstance(nom_);
+    string id;
+    Ballon::lireIdentificateur(id);
+    Ballon *pBallon = Ballon::getInstance(id);
+    if (!pBut && !pBallon) {
 
-    if (b == NULL) {
-        cerr << "Erreur le But n existe pas" << endl;
-        return;
+        pBut->associer_ballon(pBallon);
+        pBallon->associer_but(pBut);
+        cout << "but et ballon associe avec reussis" << endl;
+    } else {
+        cout << cout << "ballon ou but n'est pas trouve. Veuillez verifier l'entree svp!" << endl;
     }
-    if (n == NULL) {
-        cerr << "Erreur le Ballon n'existe pas" << endl;
-        return;
-    }
-    b->associer_ballon(n);
-    n->associer_but(b);
-    cout << "But & Ballon associe" << endl;
-
-}
-
-void But::associer_ballon(Ballon *b) {
-    monBallon = b;
 }
 
 
-void But::toString(string &s) {
+void But::associer_ballon(Ballon *ballon) {
+    monBallon = ballon;
+}
+
+
+void But::toString(string &str) {
     char ss[16];
     sprintf(ss, "%d", age);
-    s = "Nom " + nom + "\n Age " + ss + "\n But ";
+    str = "Nom " + nom + "\n Age " + ss + "\n ballon(id) ";
     if (monBallon)
-        s = s + monBallon->identificateur;
+        monBallon->toIdent(str);
     else
-        s = s + "null ";
+        str = str + "null ";
 }
 
-void But::toIdent(string &s) {
-    s = s + nom + " ";
+void But::toIdent(string &str) {
+    str = str + nom + " ";
 }

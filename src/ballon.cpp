@@ -144,7 +144,7 @@ void Ballon::toString(string &str) {
     sprintf(ss, "%d", taille);
     str = "Identificateur " + identificateur + "\n Taille " + ss + "\n But ";
     if (monBut)
-        str = str + monBut->nom;
+        monBut->toIdent(str);
     else
         str = str + "null ";
     str = str + "\nJoueurs : ";

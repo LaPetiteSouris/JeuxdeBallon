@@ -13,8 +13,9 @@ class But {
 public:
     int age;
     string nom;
-    static vector<But *> *instances;
     Ballon *monBallon;
+    static vector<But *> *instances;
+
 
     But(string, int);
 
@@ -32,15 +33,16 @@ public:
 
     static But *getInstance(string);
 
-    void toString(string &);
-
-    void toIdent(string &);
 
     static bool detruire_une_instance();
 
     static void associer_ballon_instance();
 
     void associer_ballon(Ballon *);
+
+    void toString(string &);
+
+    void toIdent(string &);
 
 };
 
