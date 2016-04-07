@@ -10,7 +10,6 @@ vector<But *> *But::instances;
 But::But(string nom_, int age_) {
     nom = nom_;
     age = age_;
-    monBallon = NULL;
 }
 
 But::~But() {

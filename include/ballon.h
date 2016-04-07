@@ -19,7 +19,7 @@ public :
     string identificateur;
     int taille;
     static vector<Ballon *> *instances;
-    But *monBut;
+    But *monBut = NULL;
     vector<Joueur *> *mesJoueurs;
 
     Ballon(string, int);

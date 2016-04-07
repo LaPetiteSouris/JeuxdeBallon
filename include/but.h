@@ -13,7 +13,7 @@ class But {
 public:
     int age;
     string nom;
-    Ballon *monBallon;
+    Ballon *monBallon = NULL;
     static vector<But *> *instances;
 
 

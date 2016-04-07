@@ -5,12 +5,11 @@
 Ballon::Ballon(string str, int taille_) {
     identificateur = str;
     taille = taille_;
-    monBut = NULL;
-    //Todo: check this sh#t, not a good idea to call new here
     mesJoueurs = new vector<Joueur *>();
 }
 
 Ballon::~Ballon() {
+    delete (mesJoueurs);
     instances->erase(std::remove(instances->begin(), instances->end(), this), instances->end());
 }
 
