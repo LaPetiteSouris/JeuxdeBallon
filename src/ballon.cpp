@@ -1,7 +1,7 @@
 // TUNG
 #include "../include/ballon.h"
 
-
+vector<Ballon*> * Ballon::instances;
 Ballon::Ballon(string str, int taille_) {
     identificateur = str;
     taille = taille_;
@@ -10,7 +10,14 @@ Ballon::Ballon(string str, int taille_) {
 
 Ballon::~Ballon() {
     delete (mesJoueurs);
-    instances->erase(std::remove(instances->begin(), instances->end(), this), instances->end());
+    for (vector<Ballon *>::iterator b = instances->begin();
+         b != instances->end(); b++) {
+        if (this == *b) {
+            instances->erase(b);
+            break;
+        }
+    }
+
 }
 
 void Ballon::lireIdentificateur(string &in) {
@@ -133,7 +140,13 @@ void Ballon::dissocier_joueur_instance() {
 }
 
 void Ballon::dissocier_joueur(Joueur *jouer) {
-    mesJoueurs->erase(std::remove(mesJoueurs->begin(), mesJoueurs->end(), jouer), mesJoueurs->end());
+    for (vector<Joueur *>::iterator it = mesJoueurs->begin();
+         it != mesJoueurs->end(); it++) {
+        if (jouer == *it) {
+            mesJoueurs->erase(it);
+            break;
+        }
+    }
 
 }
 

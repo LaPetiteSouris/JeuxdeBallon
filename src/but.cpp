@@ -3,7 +3,7 @@
 #include "../include/but.h"
 
 
-using namespace std;
+
 
 vector<But *> *But::instances;
 
@@ -13,7 +13,13 @@ But::But(string nom_, int age_) {
 }
 
 But::~But() {
-    instances->erase(std::remove(instances->begin(), instances->end(), this), instances->end());
+    for (vector<But *>::iterator it = instances->begin();
+         it != instances->end(); it++) {
+        if (this == *it) {
+            instances->erase(it);
+            break;
+        }
+    }
 }
 
 void But::lireNom(string &str) {
