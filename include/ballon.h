@@ -6,7 +6,7 @@
 #include <vector>
 #include "but.h"
 #include "joueur.h"
-
+#include <stdio.h>
 
 using namespace std;
 
