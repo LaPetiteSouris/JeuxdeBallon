@@ -8,6 +8,7 @@ Ballon::Ballon(string str, int taille_) {
     identificateur = str;
     taille = taille_;
     monBut = NULL;
+    //Todo: check this sh#t, not a good idea to call new here
     mesJoueurs = new vector<Joueur *>();
 }
 
@@ -38,6 +39,7 @@ Ballon *Ballon::creer_une_instance() {
     lireTaille(taille_);
     Ballon *ballon = new Ballon(str, taille_);
     ballon->imprimer();
+    instances->insert(instances->begin(), ballon);
     return ballon;
 }
 

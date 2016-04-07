@@ -100,7 +100,9 @@ void traite_ballon(int &i){
     while(i!=0){
         if(i==1){
             Ballon* b=Ballon::creer_une_instance();
-            Ballon::instances->insert(Ballon::instances->begin(), b);
+            //Edit by Tung. Already insert object in to vector by default in constructor
+            // @ Mustafa: Remove this line :D
+            // Ballon::instances->insert(Ballon::instances->begin(), b);
         }else if (i==2){
             Ballon::detruire_une_instance();
         }else if (i==3){
