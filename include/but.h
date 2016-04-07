@@ -42,7 +42,7 @@ public:
 
     void toString(string &);
 
-    void toIdent(string &);
+    void toNom(string &);
 
 };
 

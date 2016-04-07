@@ -102,6 +102,6 @@ void But::toString(string &str) {
         str = str + "null ";
 }
 
-void But::toIdent(string &str) {
+void But::toNom(string &str) {
     str = str + nom + " ";
 }
