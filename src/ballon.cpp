@@ -1,6 +1,4 @@
 // TUNG
-
-
 #include "../include/ballon.h"
 
 
@@ -49,13 +47,95 @@ void Ballon::imprimer_instances() {
     }
 }
 
-Ballon *Ballon::getInstance(string s) {
-    for (vector<Ballon *>::iterator b = instances->begin(); b != instances->end(); b++) {
-        if ((*b)->identificateur == s) {
-            return *b;
+Ballon *Ballon::getInstance(string str) {
+    for (vector<Ballon *>::iterator i = instances->begin(); i != instances->end(); i++) {
+        if ((*i)->identificateur == str) {
+            return *i;
         }
     }
     return NULL;
+}
+
+
+bool Ballon::detruire_une_instance() {
+    string str;
+    Ballon::lireIdentificateur(str);
+    Ballon *bal_ptr = Ballon::getInstance(str);
+    delete bal_ptr;
+    // There is no harm of deleting something that does not exist
+    return true;
+}
+
+void Ballon::associer_but_instance() {
+    string nom_;
+    But::lireNom(nom_);
+    But *but_ptr = But::getInstance(nom_);
+    string id;
+    Ballon::lireIdentificateur(id);
+    Ballon *ballon_ptr = Ballon::getInstance(id);
+    if (!but_ptr && ballon_ptr) {
+
+        but_ptr->associer_ballon(ballon_ptr);
+        ballon_ptr->associer_but(but_ptr);
+        cout << "Ballon et But associe" << endl;
+
+    } else {
+        cout << "ballon ou but n'est pas trouve. Veuillez verifier l'entree svp!" << endl;
+
+    }
+}
+
+void Ballon::associer_but(But *but) {
+    monBut = but;
+}
+
+void Ballon::associer_joueur_instance() {
+    string nome_;
+    Joueur::lireNom(nome_);
+    Joueur *joueur_ptr = Joueur::getInstance(nome_);
+    string id;
+    Ballon::lireIdentificateur(id);
+    Ballon *ballon_ptr = Ballon::getInstance(id);
+
+    if (!joueur_ptr && !ballon_ptr) {
+
+        ballon_ptr->associer_joueur(joueur_ptr);
+        joueur_ptr->associer_ballon(ballon_ptr);
+        cout << "Ballon et Joueur associe" << endl;
+
+
+    } else {
+        cout << "ballon_ptr ou joueur n'est pas trouve. Veuillez verifier l'entree svp!" << endl;
+
+    }
+}
+
+void Ballon::associer_joueur(Joueur *joueur) {
+    mesJoueurs->insert(mesJoueurs->begin(), joueur);
+}
+
+void Ballon::dissocier_joueur_instance() {
+    string nom_;
+    Joueur::lireNom(nom_);
+    Joueur *joueur_ptr = Joueur::getInstance(nom_);
+    string id;
+    Ballon::lireIdentificateur(id);
+    Ballon *ballon_ptr = Ballon::getInstance(id);
+    if (!joueur_ptr && !ballon_ptr) {
+
+        ballon_ptr->dissocier_joueur(joueur_ptr);
+        joueur_ptr->dissocier_ballon(ballon_ptr);
+        cout << "Ballon et Joueur dissocie avec reuissis" << endl;
+
+    }
+    else {
+        cout << "ballon_ptr ou joueur n'est pas trouve. Veuillez verifier l'entree svp!" << endl;
+    }
+}
+
+void Ballon::dissocier_joueur(Joueur *jouer) {
+    mesJoueurs->erase(std::remove(mesJoueurs->begin(), mesJoueurs->end(), jouer), mesJoueurs->end());
+
 }
 
 
@@ -78,102 +158,3 @@ void Ballon::toString(string &str) {
 void Ballon::toIdent(string &s) {
     s = s + identificateur + " ";
 }
-
-bool Ballon::detruire_une_instance() {
-    string s;
-    Ballon::lireIdentificateur(s);
-    Ballon *n = Ballon::getInstance(s);
-    if (n != NULL) {
-        delete n;
-        cout << "Destruction du ballon reussi" << endl;
-        return true;
-    }
-    cout << "Erreur le ballon n'existe pas" << endl;
-    return false;
-}
-
-void Ballon::associer_but_instance() {
-    string s1;
-    But::lireNom(s1);
-    But *b = But::getInstance(s1);
-    string s2;
-    Ballon::lireIdentificateur(s2);
-    Ballon *n = Ballon::getInstance(s2);
-
-    if (b == NULL) {
-        cerr << "Erreur le But n'existe pas" << endl;
-        return;
-    }
-    if (n == NULL) {
-        cerr << "Erreur le ballon n'existe pas" << endl;
-        return;
-    }
-    n->associer_but(b);
-    b->associer_ballon(n);
-    cout << "Ballon & But associe" << endl;
-
-}
-
-void Ballon::associer_but(But *b) {
-    monBut = b;
-}
-
-void Ballon::associer_joueur_instance() {
-    string s1;
-    Joueur::lireNom(s1);
-    Joueur *b = Joueur::getInstance(s1);
-    string s2;
-    Ballon::lireIdentificateur(s2);
-    Ballon *n = Ballon::getInstance(s2);
-
-    if (b == NULL) {
-        cerr << "Erreur le Joueur n'existe pas" << endl;
-        return;
-    }
-    if (n == NULL) {
-        cerr << "Erreur le Ballon n'existe pas" << endl;
-        return;
-    }
-    n->associer_joueur(b);
-    b->associer_ballon(n);
-    cout << "Ballon et Joueur associe" << endl;
-
-}
-
-void Ballon::associer_joueur(Joueur *j) {
-    mesJoueurs->insert(mesJoueurs->begin(), j);
-}
-
-void Ballon::dissocier_joueur_instance() {
-    string s1;
-    Joueur::lireNom(s1);
-    Joueur *b = Joueur::getInstance(s1);
-    string s2;
-    Ballon::lireIdentificateur(s2);
-    Ballon *n = Ballon::getInstance(s2);
-
-    if (b == NULL) {
-        cerr << "Erreur le Joueur n'existe pas" << endl;
-        return;
-    }
-    if (n == NULL) {
-        cerr << "Erreur le Ballon n'existe pas" << endl;
-        return;
-    }
-    n->dissocier_joueur(b);
-    b->dissocier_ballon(n);
-    cout << "Ballon et Joueur dissocie" << endl;
-}
-
-void Ballon::dissocier_joueur(Joueur *j) {
-    for (vector<Joueur *>::iterator b = mesJoueurs->begin(); b != mesJoueurs->end(); b++) {
-        if (*b == j) {
-            mesJoueurs->erase(b);
-            break;
-        }
-    }
-    cerr << "Erreur Ballon & Joueur non associe" << endl;
-
-
-}
-
