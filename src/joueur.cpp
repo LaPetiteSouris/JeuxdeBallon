@@ -1,46 +1,48 @@
-//MUSTAFA
-#include <iostream>
-#include <string>
-#include <vector>
-#include "../include/ballon.h"
-#include "../include/joueur.h"
 
+//MUSTAFA
+#include "../include/joueur.h"
 
 using namespace std;
 
 vector<Joueur*> * Joueur::instances;
 
-Joueur::Joueur (string s, int a){
-    nom=s;
-    age=a;
+Joueur::Joueur (string nom, int age){
+    this->nom=nom;
+    this->age=age;
     monBallon=NULL;
 }
 
 Joueur::~Joueur(){
-    for (vector<Joueur*>::iterator j=instances->begin(); j!=instances->end(); j++){
-        if(this==*j){
-            instances->erase(j);
+    for (vector<Joueur*>::iterator i=instances->begin(); i!=instances->end(); i++){
+        if(this==*i){
+            instances->erase(i);
             break;
     }
  }
 }
 
-void Joueur::lireNom (string& s){
-    cout<<"Entrer un nom de joueur: "<<endl;
-    cin>>s;
+void Joueur::lireNom (string& _nom){
+    cout<<"saisie le nom"<<endl;
+    cin>>_nom;
 }
-void Joueur::lireAge (int& a){
-    cout<<"Entrer l age du joueur: "<<endl;
-    cin>>a;
+void Joueur::lireAge (int& _age){
+    cout<<"saisie l'age"<<endl;
+    cin>>_age;
 }
 
 void Joueur::imprimer(){
-    string s;
-    this->toString(s);
-    cout << s <<endl;
+
+string Result;//la chaine de caracteres qui va contenir le result
+stringstream convert;
+convert << age;
+Result = convert.str();
+    Result = "Nom : " + nom + "\n But : ";
+    if (monBallon)
+        Result = Result + monBallon->identificateur;
+    cout<<Result<<endl;
 }
 
-Joueur* Joueur::creer_une_instance(){
+Joueur* Joueur::creer_instance(){
     string s;
     int a;
     Joueur::lireNom(s);
@@ -56,28 +58,19 @@ Joueur* Joueur::creer_une_instance(){
 }
 
 void Joueur::imprimer_instances(){
-    for(vector<Joueur*>::iterator j=instances->begin();j!=instances->end(); j++){
-        (*j)->imprimer();
+    cout<<"Les joueurs : \n"<<endl;
+    for(vector<Joueur*>::iterator i=instances->begin();i!=instances->end(); i++){
+        (*i)->imprimer();
     }
 }
 
-Joueur* Joueur::getInstance(string s){
+Joueur* Joueur::getInstance(string _nom){
     for (vector<Joueur*>::iterator j=instances->begin(); j!=instances->end(); j++){
-        if ((*j)->nom==s){
+        if ((*j)->nom==_nom){
             return *j;
         }
     }
     return NULL;
-}
-
-void Joueur::toString(string &s){
-    char ss[16];
-    sprintf (ss, "%d", age);
-    s = "Nom " + nom + "\n Age " + ss + "\n But ";
-    if (monBallon) 
-        s = s + monBallon->identificateur;
-    else 
-        s = s + "null ";
 }
 
 void Joueur::toIdent(string & s) {
@@ -90,33 +83,35 @@ bool Joueur::detruire_une_instance(){
     Joueur* n=Joueur::getInstance(s);
     if(n!=NULL){
         delete n;
-        cout<<"Destruction de ballon reussi"<<endl;        
+        cout<<"Destruction de ballon reussi"<<endl;
         return true;
     }
-    cout<<"Erreur le Ballon n existe pas"<<endl;    
+    cout<<"Erreur le Ballon n'existe pas"<<endl;
     return false;
 }
 
-void Joueur::associer_ballon_instance(){
-    string s1;    
-    Joueur::lireNom(s1);
-    Joueur* b=Joueur::getInstance(s1);
-    string s2;
-    Ballon::lireIdentificateur(s2);
-    Ballon* n=Ballon::getInstance(s2);
+void Joueur::associer_ballon_Joueur(){
+    string _nom;
+    string id;
+    Joueur::lireNom(_nom);
+    Joueur* j=Joueur::getInstance(_nom);
+    Ballon::lireIdentificateur(id);
+    Ballon* n=Ballon::getInstance(id);
 
-    if(b==NULL){
-        cerr<<"Erreur le Joueur n existe pas "<<endl;
+    if(j==NULL){
+        cerr<<"Erreur le Joueur : "<<_nom<<"n'existe pas "<<endl;
         return;
     }
     if(n==NULL){
-        cerr<<"Erreur le Ballon n existe pas"<<endl;
+        cerr<<"Erreur le Ballon : "<<id<<" n'existe pas"<<endl;
         return;
     }
-    b->associer_ballon(n);
-    n->associer_joueur(b);    
-    cout<<"Joueur & Ballon asscie"<<endl;
-    
+    //associer le ballon au joueur
+    j->associer_ballon(n);
+    //associer le joueur au ballon
+    n->associer_joueur(j);
+    cout<<"Le Joueur : "<<_nom<<" et le Ballon : "<<id<<" sont asscie"<<endl;
+
 
 }
 
@@ -124,27 +119,25 @@ void Joueur::associer_ballon(Ballon *b){
     monBallon=b;
 }
 
-void Joueur::dissocier_ballon_instance(){
-    string s1;    
-    Joueur::lireNom(s1);
-    Joueur* j=Joueur::getInstance(s1);
-    string s2;
-    Ballon::lireIdentificateur(s2);
-    Ballon* n=Ballon::getInstance(s2);
-
+void Joueur::dissocier_ballon_Joueur(){
+    string _nom;
+    string id;
+    Joueur::lireNom(_nom);
+    Joueur* j=Joueur::getInstance(_nom);
+    Ballon::lireIdentificateur(id);
+    Ballon* n=Ballon::getInstance(id);
     if(j==NULL){
-        cerr<<"Erreur le Joueur n existe pas"<<endl;
+        cerr<<"Erreur le Joueur : "<<_nom<<" n'existe pas"<<endl;
         return;
     }
     if(n==NULL){
-        cerr<<"Erreur le Ballon n existe pas"<<endl;
+        cerr<<"Erreur le Ballon : "<<id<<"n'existe pas"<<endl;
         return;
     }
-
     j->monBallon=NULL;
     n->dissocier_joueur(j);
 
-    cout<<"Joueur & Ballon dissocie"<<endl;    
+    cout<<"Le joueur "<<_nom<<" et le Ballon "<<id<<" vient d'etre dissocie"<<endl;
 }
 
 void Joueur::dissocier_ballon(Ballon *b){
